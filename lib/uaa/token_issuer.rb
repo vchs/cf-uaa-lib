@@ -233,9 +233,9 @@ class TokenIssuer
   # and +password+ to get a token via the owner password grant.
   # See {http://tools.ietf.org/html/rfc6749#section-4.3}.
   # @return [TokenInfo]
-  def owner_password_grant(username, password, scope = nil)
-    request_token(:grant_type => 'password', :username => username,
-        :password => password, :scope => scope)
+  def owner_password_grant(username, password, additional_args = {}, scope = nil)
+    request_token({:grant_type => 'password', :username => username,
+        :password => password, :scope => scope}.merge(additional_args))
   end
 
   # Uses the instance client credentials to get a token with a client
