@@ -105,6 +105,27 @@ describe TokenIssuer do
       token.info["expires_in"].should == 98765
     end
 
+
+    it "gets a token with owner password and additional options" do
+      subject.set_request_handler do |url, method, body, headers|
+        headers["content-type"].should =~ /application\/x-www-form-urlencoded/
+        headers["accept"].should =~ /application\/json/
+        body.should =~ /tenant_id=tenant-a/
+        # TODO check basic auth header
+        url.should == "http://test.uaa.target/oauth/token"
+        method.should == :post
+        reply = {:access_token => "test_access_token", :token_type => "BEARER",
+                 :scope => "openid", :expires_in => 98765}
+        [200, Util.json(reply), {"content-type" => "application/json"}]
+      end
+      token = subject.owner_password_grant("joe+admin", "?joe's%password$@ ", "openid", {tenant_id: 'tenant-a'})
+      token.should be_an_instance_of TokenInfo
+      token.info["access_token"].should == "test_access_token"
+      token.info["token_type"].should =~ /^bearer$/i
+      token.info["scope"].should == "openid"
+      token.info["expires_in"].should == 98765
+    end
+
   end
 
   context "with implicit grant" do

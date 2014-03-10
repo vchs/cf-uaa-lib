@@ -74,8 +74,10 @@ class TokenIssuer
     end
     headers = {'content-type' => FORM_UTF8, 'accept' => JSON_UTF8,
         'authorization' => Http.basic_auth(@client_id, @client_secret) }
+    puts "REQUEST #{@token_target} #{params.inspect} #{headers.inspect}"
     reply = json_parse_reply(@key_style, *request(@token_target, :post,
         '/oauth/token', Util.encode_form(params), headers))
+    puts "REPLY #{reply.inspect}"
     raise BadResponse unless reply[jkey :token_type] && reply[jkey :access_token]
     TokenInfo.new(reply)
   end
@@ -233,7 +235,7 @@ class TokenIssuer
   # and +password+ to get a token via the owner password grant.
   # See {http://tools.ietf.org/html/rfc6749#section-4.3}.
   # @return [TokenInfo]
-  def owner_password_grant(username, password, additional_args = {}, scope = nil)
+  def owner_password_grant(username, password, scope = nil, additional_args = {})
     request_token({:grant_type => 'password', :username => username,
         :password => password, :scope => scope}.merge(additional_args))
   end
