@@ -74,10 +74,8 @@ class TokenIssuer
     end
     headers = {'content-type' => FORM_UTF8, 'accept' => JSON_UTF8,
         'authorization' => Http.basic_auth(@client_id, @client_secret) }
-    puts "REQUEST #{@token_target} #{params.inspect} #{headers.inspect}"
     reply = json_parse_reply(@key_style, *request(@token_target, :post,
         '/oauth/token', Util.encode_form(params), headers))
-    puts "REPLY #{reply.inspect}"
     raise BadResponse unless reply[jkey :token_type] && reply[jkey :access_token]
     TokenInfo.new(reply)
   end
