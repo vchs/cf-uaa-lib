@@ -1,0 +1,7 @@
+Verified+1: Andrew Liu <aliu@vmware.com>
+Code-Review+2: Henry Chen <hchen@vmware.com>
+Submitted-by: Andrew Liu <aliu@vmware.com>
+Submitted-at: Thu, 15 May 2014 01:32:34 +0000
+Reviewed-on: http://tempest-reviews.eng.vmware.com/2678
+Project: cf-uaa-lib
+Branch: refs/heads/support_additional_auth_params
