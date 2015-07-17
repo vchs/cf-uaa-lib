@@ -248,8 +248,8 @@ class TokenIssuer
   # Uses the instance client credentials and the given +refresh_token+ to get
   # a new access token. See http://tools.ietf.org/html/rfc6749#section-6
   # @return [TokenInfo] which may include a new refresh token as well as an access token.
-  def refresh_token_grant(refresh_token, scope = nil)
-    request_token(:grant_type => 'refresh_token', :refresh_token => refresh_token, :scope => scope)
+  def refresh_token_grant(refresh_token, scope = nil, additional_args = {})
+    request_token({:grant_type => 'refresh_token', :refresh_token => refresh_token, :scope => scope}.merge(additional_args))
   end
 
 end
